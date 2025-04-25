@@ -17,7 +17,7 @@ type APIServer struct {
 func NewAPIServer(addr string, db *sql.DB) *APIServer {
 	return &APIServer{
 		addr: addr,
-		db: db,
+		db:   db,
 	}
 }
 
