@@ -9,6 +9,7 @@ import (
 )
 
 type Handler struct {
+	store *types.User
 }
 
 func NewHandler() *Handler {
