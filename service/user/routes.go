@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/saikumaradapa/ecom/types"
+	"github.com/saikumaradapa/ecom/utils"
 )
 
 type Handler struct {
@@ -23,5 +25,13 @@ func (h *Handler) handleLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) handleRegister(w http.ResponseWriter, r *http.Request) {
+	// get JSON payload
+	var payload types.RegisterUserPayload
 
+	if err := utils.ParseJSON(r, payload); err != nil {
+		utils.WriteError(w, http.StatusBadRequest, err)
+	}
+
+	// check if the user exists
+	// if it doesn't we create the new user
 }
