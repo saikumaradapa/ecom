@@ -1,5 +1,9 @@
 package types
 
+type UserStore interface {
+	
+}
+
 type User struct {
 	ID int `json:"id"`
 	FirstName int `json:"firstName"`
