@@ -8,15 +8,14 @@ import (
 	"github.com/saikumaradapa/ecom/service/auth"
 	"github.com/saikumaradapa/ecom/types"
 	"github.com/saikumaradapa/ecom/utils"
-	"golang.org/x/tools/go/analysis/passes/nilfunc"
 )
 
 type Handler struct {
 	store types.UserStore
 }
 
-func NewHandler(Store types.UserStore) *Handler {
-	return &Handler{store: Store}
+func NewHandler(store types.UserStore) *Handler {
+	return &Handler{store: store}
 }
 
 func (h *Handler) RegisterRoutes(router *mux.Router) {
@@ -32,14 +31,16 @@ func (h *Handler) handleRegister(w http.ResponseWriter, r *http.Request) {
 	// get JSON payload
 	var payload types.RegisterUserPayload
 
-	if err := utils.ParseJSON(r, payload); err != nil {
+	if err := utils.ParseJSON(r, &payload); err != nil {
 		utils.WriteError(w, http.StatusBadRequest, err)
+		return
 	}
 
 	// check if the user exists
 	_, err := h.store.GetUserByEmail(payload.Email)
 	if err == nil {
 		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("user with email %s already exists", payload.Email))
+		return 
 	}
 
 	hashedPassword, err := auth.HashPassword(payload.Password)
