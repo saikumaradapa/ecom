@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 	"github.com/saikumaradapa/ecom/service/auth"
 	"github.com/saikumaradapa/ecom/types"
@@ -36,11 +37,18 @@ func (h *Handler) handleRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// validate the payload
+	if err := utils.Validate.Struct(payload); err != nil {
+		errors := err.(validator.ValidationErrors)
+		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid payload &v", errors))
+		return
+	}
+
 	// check if the user exists
 	_, err := h.store.GetUserByEmail(payload.Email)
 	if err == nil {
 		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf("user with email %s already exists", payload.Email))
-		return 
+		return
 	}
 
 	hashedPassword, err := auth.HashPassword(payload.Password)
@@ -58,7 +66,7 @@ func (h *Handler) handleRegister(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		utils.WriteError(w, http.StatusInternalServerError, err)
-		return 
+		return
 	}
 
 	utils.WriteJSON(w, http.StatusCreated, nil)
