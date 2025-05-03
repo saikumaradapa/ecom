@@ -2,7 +2,5 @@
 .vscode/
 bin/
 
-
-
 .env
 ecom.session.sql
