@@ -17,11 +17,12 @@ func TestUserServiceHandlers(t *testing.T) {
 
 	t.Run("should fail if the user payload is invalid", func(t *testing.T) {
 		payload := types.RegisterUserPayload{
-			FirstName: "user",
-			LastName: "one",
-			Email: "ask@gmail.com",
-			Password: "asd",
+			FirstName: "John",
+			LastName:  "Doe",
+			Email:     "john@example.com",
+			Password:  "strongpass",
 		}
+		
 		marshalled, _ := json.Marshal(payload)
 
 		req, err := http.NewRequest(http.MethodPost, "/register", bytes.NewBuffer(marshalled))
@@ -41,12 +42,12 @@ func TestUserServiceHandlers(t *testing.T) {
 	})
 }
 
-type mockUserStore struct {}
+type mockUserStore struct{}
 
 func (m *mockUserStore) GetUserByEmail(email string) (*types.User, error) {
 	return nil, nil
 }
 
-func (m *mockUserStore) CreateUser (user types.User) error {
+func (m *mockUserStore) CreateUser(user types.User) error {
 	return nil
 }
