@@ -9,7 +9,7 @@ import (
 func getCartItemsIDs(items []types.CartItem) ([]int, error) {
 	productIds := make([]int, len(items))
 	for i, item := range items {
-		if item .Quantity <= 0 {
+		if item.Quantity <= 0 {
 			return nil, fmt.Errorf("invalid quantity for the product %d", item.ProductId)
 		}
 
@@ -20,6 +20,6 @@ func getCartItemsIDs(items []types.CartItem) ([]int, error) {
 }
 
 func CreateOrder(ps []types.Product, item []types.CartItem, userID int) (int, float64, error) {
-	// check if all products are actually in stock
-	// f
+	// to do
+	return 0, 0, nil
 }

@@ -9,7 +9,7 @@ import (
 )
 
 type Handler struct {
-	store types.OrderStore
+	store        types.OrderStore
 	productStore types.ProductStore
 }
 
@@ -21,18 +21,18 @@ func (h *Handler) RegisterRoutes(router *mux.Router) {
 	router.HandleFunc("/cart/checkout", h.handleCheckout).Methods(http.MethodPost)
 }
 
-func (h *Handler) handleCheckout(w http.ResponseWriter, r *http.Request)  {
+func (h *Handler) handleCheckout(w http.ResponseWriter, r *http.Request) {
 	var cart types.CartCheckoutPayload
 	if err := utils.ParseJSON(r, &cart); err != nil {
 		utils.WriteError(w, http.StatusBadRequest, err)
-		return 
+		return
 	}
 
-	// get products 
+	// get products
 	productIDs, err := getCartItemsIDs(cart.Items)
 	if err != nil {
 		utils.WriteError(w, http.StatusBadRequest, err)
-		return 
+		return
 	}
 
 	ps, err := h.productStore.GetProductsByIDs(productIDs)
