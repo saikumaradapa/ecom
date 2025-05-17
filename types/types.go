@@ -4,6 +4,7 @@ import "time"
 
 type UserStore interface {
 	GetUserByEmail(email string) (*User, error)
+	GetUserByID(int) (*User, error)
 	CreateUser(User) error
 }
 
