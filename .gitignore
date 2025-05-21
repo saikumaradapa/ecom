@@ -3,7 +3,6 @@
 bin/
 
 
-
 commands-used.txt
 .env
 ecom.session.sql
