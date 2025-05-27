@@ -77,7 +77,7 @@ func checkIfCartIsInStock(cartItems []types.CartItem, products map[int]types.Pro
 		}
 
 		if product.Quantity < item.Quantity {
-			return fmt.Errorf("product %s is not available in the quantity requested", item.Quantity)
+			return fmt.Errorf("product %d is not available in the quantity requested", item.Quantity)
 		}
 	}
 
