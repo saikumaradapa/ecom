@@ -11,33 +11,32 @@ import (
 	"github.com/saikumaradapa/ecom/types"
 )
 
-func TestUserServiceHandlers(t *testing.T) {
+func TestRegisterHandler(t *testing.T) {
 	userStore := &mockUserStore{}
 	handler := NewHandler(userStore)
 
-	t.Run("should fail if the user payload is invalid", func(t *testing.T) {
-		payload := types.RegisterUserPayload{
+	t.Run("should return 400 Bad Request for invalid user payload", func(t *testing.T) {
+		invalidPayload := types.RegisterUserPayload{
 			FirstName: "John",
 			LastName:  "Doe",
-			Email:     "john@",
+			Email:     "john@", // invalid email
 			Password:  "strongpass",
 		}
 
-		marshalled, _ := json.Marshal(payload)
+		requestBody, _ := json.Marshal(invalidPayload)
 
-		req, err := http.NewRequest(http.MethodPost, "/register", bytes.NewBuffer(marshalled))
+		req, err := http.NewRequest(http.MethodPost, "/register", bytes.NewBuffer(requestBody))
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		rr := httptest.NewRecorder()
+		recorder := httptest.NewRecorder()
 		router := mux.NewRouter()
-
 		router.HandleFunc("/register", handler.handleRegister)
-		router.ServeHTTP(rr, req)
+		router.ServeHTTP(recorder, req)
 
-		if rr.Code != http.StatusBadRequest {
-			t.Errorf("expected status code %d, got %d", http.StatusBadRequest, rr.Code)
+		if recorder.Code != http.StatusBadRequest {
+			t.Errorf("expected status code %d, got %d", http.StatusBadRequest, recorder.Code)
 		}
 	})
 }
