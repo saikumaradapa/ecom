@@ -19,10 +19,10 @@ func NewStore(db *sql.DB) *Store {
 
 func (s *Store) GetUserByEmail(email string) (*types.User, error) {
 	rows, err := s.db.Query("SELECT * FROM users WHERE email = ?", email)
-	defer rows.Close()
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	u := new(types.User)
 	for rows.Next() {
@@ -41,10 +41,10 @@ func (s *Store) GetUserByEmail(email string) (*types.User, error) {
 
 func (s *Store) GetUserByID(id int) (*types.User, error) {
 	rows, err := s.db.Query("SELECT * FROM users WHERE id = ?", id)
-	defer rows.Close()
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	u := new(types.User)
 	for rows.Next() {
